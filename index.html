@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Something For You ❤️</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:#09080d;
+  color:#f7f2f5;
+  font-family:Georgia,"Times New Roman",serif;
+  overflow-x:hidden;
+}
+
+button{
+  font-family:inherit;
+}
+
+.screen{
+  display:none;
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+}
+
+.screen.active{
+  display:block;
+  animation:fadeIn .7s ease;
+}
+
+.wrap{
+  width:min(1050px,92%);
+  margin:auto;
+  padding:70px 0;
+  position:relative;
+  z-index:3;
+}
+
+.center{
+  text-align:center;
+}
+
+h1,h2,h3{
+  font-weight:400;
+}
+
+h1{
+  font-size:clamp(42px,8vw,90px);
+  line-height:1;
+}
+
+h2{
+  font-size:clamp(32px,6vw,58px);
+  line-height:1.1;
+}
+
+p{
+  color:#d9d0d6;
+  line-height:1.9;
+  font-size:18px;
+}
+
+.eyebrow{
+  text-transform:uppercase;
+  letter-spacing:4px;
+  font-size:11px;
+  color:#d9a9c4;
+  margin-bottom:18px;
+}
+
+.small{
+  font-size:14px;
+  color:#9e929a;
+}
+
+.card{
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:28px;
+  padding:32px;
+  backdrop-filter:blur(18px);
+  box-shadow:0 20px 70px rgba(0,0,0,.35);
+}
+
+.btn{
+  border:1px solid rgba(255,190,220,.4);
+  background:linear-gradient(135deg,#e9a9c5,#a98edb);
+  color:#180e16;
+  padding:15px 27px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:16px;
+  margin:10px;
+  transition:.25s;
+  box-shadow:0 10px 35px rgba(214,151,192,.18);
+}
+
+.btn:hover{
+  transform:translateY(-3px) scale(1.02);
+}
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-top:30px;
+}
+
+.choice{
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  border-radius:20px;
+  padding:20px;
+  cursor:pointer;
+  font-size:17px;
+  line-height:1.45;
+  transition:.25s;
+}
+
+.choice:hover{
+  background:rgba(224,165,203,.13);
+  border-color:rgba(231,173,205,.5);
+  transform:translateY(-3px);
+}
+
+.choice:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.glow{
+  position:absolute;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(208,143,188,.16),transparent 68%);
+  top:-180px;
+  left:50%;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+
+.stars:before,
+.stars:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.7) 1px,transparent 1px),
+    radial-gradient(circle,rgba(225,175,218,.5) 1px,transparent 1px);
+  background-size:95px 95px,145px 145px;
+  opacity:.15;
+  pointer-events:none;
+}
+
+.lock-content{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:30px;
+}
+
+.lock-box{
+  max-width:650px;
+}
+
+.lock-box h1{
+  margin-bottom:25px;
+}
+
+.countdown{
+  font-size:clamp(24px,5vw,48px);
+  letter-spacing:5px;
+  color:#efbdd4;
+  margin:30px 0;
+}
+
+.secret{
+  color:#a99da5;
+  font-size:14px;
+}
+
+.heart{
+  color:#eab1cc;
+  font-size:55px;
+  animation:pulse 2s infinite;
+  margin-bottom:15px;
+}
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.hero h1{
+  margin:15px 0 25px;
+}
+
+.hero p{
+  max-width:650px;
+  margin:auto;
+}
+
+.level-badge{
+  display:inline-block;
+  padding:8px 14px;
+  border:1px solid rgba(233,178,210,.3);
+  border-radius:999px;
+  color:#e3b4cb;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.progress{
+  height:4px;
+  background:rgba(255,255,255,.08);
+  border-radius:10px;
+  margin:18px 0 35px;
+  overflow:hidden;
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#e8a8c5,#a99add);
+  transition:.4s;
+}
+
+.count{
+  color:#b9aab4;
+  font-size:13px;
+  letter-spacing:2px;
+  margin-bottom:14px;
+}
+
+.scorebar{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+
+.score{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:15px;
+  padding:10px 15px;
+  color:#cfc3ca;
+  font-size:14px;
+}
+
+.score b{
+  color:#fff;
+}
+
+.catch-area{
+  height:390px;
+  border-radius:28px;
+  border:1px dashed rgba(232,177,207,.25);
+  background:rgba(255,255,255,.025);
+  position:relative;
+  overflow:hidden;
+  margin-top:25px;
+}
+
+.runner{
+  position:absolute;
+  left:40%;
+  top:42%;
+  border:0;
+  background:linear-gradient(135deg,#efaeca,#b19add);
+  color:#180e16;
+  border-radius:999px;
+  padding:17px 23px;
+  font-size:18px;
+  cursor:pointer;
+  transition:left .35s ease,top .35s ease,transform .2s;
+  box-shadow:0 10px 35px rgba(220,160,197,.25);
+}
+
+.runner:hover{
+  transform:scale(1.05);
+}
+
+.status{
+  text-align:center;
+  margin-top:20px;
+  color:#d9b7c9;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:30px;
+  transform:translate(-50%,20px);
+  background:#17131a;
+  border:1px solid rgba(238,180,211,.3);
+  color:#fff;
+  padding:15px 20px;
+  border-radius:16px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:100;
+  max-width:90%;
+  text-align:center;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+.timeline{
+  margin-top:65px;
+  position:relative;
+}
+
+.timeline:before{
+  content:"";
+  position:absolute;
+  left:17px;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:linear-gradient(#c997b5,transparent);
+}
+
+.titem{
+  padding-left:60px;
+  margin-bottom:65px;
+  position:relative;
+}
+
+.titem:before{
+  content:"";
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:#dfa9c5;
+  position:absolute;
+  left:12px;
+  top:7px;
+  box-shadow:0 0 20px rgba(223,169,197,.6);
+}
+
+.year{
+  color:#dfa9c5;
+  letter-spacing:3px;
+  font-size:13px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+
+.titem p{
+  max-width:800px;
+}
+
+.memory-break{
+  padding:70px 0;
+  text-align:center;
+}
+
+.memory-break .card{
+  max-width:780px;
+  margin:30px auto;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-top:35px;
+}
+
+.photo-card{
+  aspect-ratio:4/5;
+  border-radius:22px;
+  overflow:hidden;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  position:relative;
+  animation:fadeIn .7s ease;
+}
+
+.photo-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .6s;
+}
+
+.photo-card:hover img{
+  transform:scale(1.06);
+}
+
+.letter{
+  max-width:900px;
+}
+
+.letter .card{
+  margin-top:35px;
+  text-align:left;
+}
+
+.letter p{
+  margin-bottom:24px;
+}
+
+.big-letter .card{
+  padding:clamp(25px,5vw,55px);
+}
+
+.big-letter p{
+  font-size:18px;
+}
+
+.final-heart{
+  font-size:90px;
+  color:#e9aac7;
+  animation:pulse 2.3s infinite;
+  margin-bottom:15px;
+}
+
+.final-lines{
+  margin:30px auto;
+  max-width:700px;
+}
+
+.final-lines p{
+  margin:12px 0;
+}
+
+.music-btn{
+  position:fixed;
+  right:18px;
+  top:18px;
+  z-index:90;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(18,15,21,.8);
+  color:#eee;
+  border-radius:999px;
+  padding:10px 15px;
+  cursor:pointer;
+  backdrop-filter:blur(12px);
+}
+
+.hidden{
+  display:none;
+}
+
+.fade{
+  animation:fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+
+@media(max-width:700px){
+  .wrap{
+    padding:50px 0;
+  }
+
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+  .gallery{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .card{
+    padding:22px;
+  }
+
+  p{
+    font-size:16px;
+  }
+
+  .catch-area{
+    height:330px;
+  }
+}
+
+@media(max-width:430px){
+  .gallery{
+    grid-template-columns:1fr;
+  }
+
+  .runner{
+    padding:15px 19px;
+    font-size:16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<button id="musicBtn" class="music-btn hidden" onclick="toggleMusic()">♫ music</button>
+
+<div id="app">
+
+<!-- ================= LOCK ================= -->
+
+<section id="lock" class="screen active">
+  <div class="stars"></div>
+  <div class="glow"></div>
+
+  <div class="lock-content">
+    <div class="lock-box">
+      <div class="heart">♡</div>
+      <div class="eyebrow">something is waiting for you</div>
+      <h1>Not yet.</h1>
+      <p>
+        There is something here for you.<br>
+        But apparently, you have to wait.
+      </p>
+
+      <div id="countdown" class="countdown">
+        00 : 00 : 00 : 00
+      </div>
+
+      <div class="secret">
+        a little surprise is hiding behind this screen.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= ENTRY ================= -->
+
+<section id="entry" class="screen">
+  <div class="stars"></div>
+  <div class="glow"></div>
+
+  <div class="hero">
+    <div class="wrap fade">
+      <div class="heart">♡</div>
+      <div class="eyebrow">okay... you're finally here</div>
+      <h1>Tap to enter.</h1>
+      <p>
+        I made something for you.<br>
+        And yes, you actually have to go through all of it.
+      </p>
+
+      <button class="btn" onclick="enterSite()">Tap to enter ❤️</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= INTRO ================= -->
+
+<section id="intro" class="screen">
+  <div class="stars"></div>
+  <div class="glow"></div>
+
+  <div class="hero">
+    <div class="wrap fade">
+      <div class="eyebrow">welcome</div>
+      <h1>Before anything else...</h1>
+
+      <p style="max-width:700px;margin:25px auto">
+        You have officially entered a website that I spent way too much time making.
+        So please appreciate the effort before judging the nonsense.
+      </p>
+
+      <button class="btn" onclick="show('verify')">
+        Let's see if you actually know me →
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= VERIFICATION ================= -->
+
+<section id="verify" class="screen">
+  <div class="wrap">
+    <div class="center">
+      <span class="level-badge">Boyfriend Verification</span>
+      <h2 style="margin-top:25px">Let's establish some facts.</h2>
+      <p style="margin:20px auto;max-width:650px">
+        There are certain things a boyfriend is legally expected to know.
+      </p>
+    </div>
+
+    <div class="card" style="margin-top:35px">
+      <div id="verifyBox"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= LEVEL 1 ================= -->
+
+<section id="level1" class="screen">
+  <div class="wrap">
+    <div class="center">
+      <span class="level-badge">Level 1</span>
+      <div class="eyebrow" style="margin-top:25px">memory test</div>
+      <h2>One tiny question.</h2>
+      <p style="max-width:650px;margin:20px auto">
+        Let's see if you remember one of the dates that actually matters.
+      </p>
+    </div>
+
+    <div class="card" style="margin-top:35px">
+      <div class="count">01 / 01</div>
+      <h3 style="font-size:clamp(26px,5vw,43px);line-height:1.2">
+        When did we start dating?
+      </h3>
+
+      <div class="choice-grid">
+        <button class="choice" onclick="level1(false)">30 July 2024</button>
+        <button class="choice" onclick="level1(true)">8 May 2024 ❤️</button>
+        <button class="choice" onclick="level1(false)">9 October 2024</button>
+        <button class="choice" onclick="level1(false)">That's classified information 😭</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= LEVEL 2 CATCH ================= -->
+
+<section id="catch" class="screen">
+  <div class="wrap">
+    <div class="center">
+      <span class="level-badge">Level 2</span>
+      <div class="eyebrow" style="margin-top:25px">okay, now work for it</div>
+      <h2>Catch Pucchkii.</h2>
+      <p style="max-width:650px;margin:20px auto">
+        She isn't going to make this easy.<br>
+        Click the button <b>3 times</b>.
+      </p>
+    </div>
+
+    <div class="catch-area" id="catchArea">
+      <button id="runner" class="runner">Catch me ❤️</button>
+    </div>
+
+    <div id="catchStatus" class="status">
+      Caught 0/3
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= GAME 1 ================= -->
+
+<section id="game1" class="screen">
+  <div class="wrap">
+
+    <div class="center">
+      <span class="level-badge">How Well Do You Know Us?</span>
+      <p style="margin-top:15px">
+        Choose carefully. Your answers are being judged.
+      </p>
+    </div>
+
+    <div class="scorebar">
+      <div class="score">🧠 Common sense: <b id="common">0</b></div>
+      <div class="score">💔 RLSHP points: <b id="rel">-69</b></div>
+    </div>
+
+    <div class="card">
+      <div class="count" id="g1count">01 / 12</div>
+      <div class="progress"><i id="g1bar"></i></div>
+
+      <h3 id="g1q"
+          style="font-size:clamp(25px,5vw,43px);font-weight:400;line-height:1.15">
+      </h3>
+
+      <div class="choice-grid">
+        <button class="choice" onclick="answerG1('PUCCHKUU')">PUCCHKUU</button>
+        <button class="choice" onclick="answerG1('PUCCHKII')">PUCCHKII</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= GAME 2 ================= -->
+
+<section id="game2" class="screen">
+  <div class="wrap">
+
+    <div class="center">
+      <span class="level-badge">Decision Room</span>
+      <p style="margin-top:15px">
+        Both options are terrible. Choose one anyway.
+      </p>
+    </div>
+
+    <div class="card" style="margin-top:25px">
+      <div class="count" id="g2count">01 / 12</div>
+      <div class="progress"><i id="g2bar"></i></div>
+
+      <h3 id="g2q"
+          style="font-size:clamp(23px,4vw,37px);font-weight:400;line-height:1.2">
+      </h3>
+
+      <div class="choice-grid">
+        <button class="choice" id="g2a" onclick="answerG2(0)"></button>
+        <button class="choice" id="g2b" onclick="answerG2(1)"></button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= STORY ================= -->
+
+<section id="story" class="screen">
+  <div class="wrap">
+
+    <div class="center">
+      <div class="eyebrow">enough nonsense</div>
+      <h2>Now let's talk about us.</h2>
+      <p style="max-width:700px;margin:25px auto">
+        Because underneath all the jokes, games and chaos,
+        there is a story that means a lot to me.
+      </p>
+    </div>
+
+    <div class="timeline">
+
+      <article class="titem">
+        <div class="year">2022</div>
+        <p>
+          Somewhere between school, coaching and random conversations,
+          you became part of my life.
+        </p>
+      </article>
+
+      <article class="titem">
+        <div class="year">2022 → 2024</div>
+        <p>
+          We were friends. We laughed, talked, fought over stupid things
+          and somehow kept becoming closer.
+        </p>
+      </article>
+
+      <article class="titem">
+        <div class="year">8 MAY 2024</div>
+        <p>
+          And then… us ❤️
+        </p>
+      </article>
+
+      <article class="titem">
+        <div class="year">2024 → 2026</div>
+        <p>
+          There were school memories, lunch-break visits, promises,
+          fights, laughing, understanding, choosing each other,
+          building a life and simply being part of each other's lives.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="memory-break">
+      <div class="year">THE LITTLE THINGS</div>
+
+      <h2 style="font-size:clamp(28px,6vw,55px)">
+        Some moments don't need a photo.
+      </h2>
+
+      <div class="card">
+        <p>
+          Remember when you used to come see me during lunch,
+          even if it was only for a few seconds?
+        </p>
+
+        <p style="margin-top:20px">
+          I don't have pictures of every little moment —
+          but I remember how those few seconds could make
+          an ordinary day feel special.
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:55px">
+      <div class="year">NOW</div>
+
+      <p>
+        We're long-distance now.
+      </p>
+
+      <p style="margin-top:12px">
+        We're not perfect.
+      </p>
+
+      <p style="margin-top:12px">
+        We're still going to have difficult days.
+      </p>
+
+      <p style="margin-top:12px">
+        But I notice the small efforts, the adjustments
+        and the ways we keep choosing each other.
+      </p>
+    </div>
+
+    <div class="card center">
+      <div class="year">WHAT'S NEXT</div>
+
+      <p>
+        I want to keep walking beside you through life,
+        learning, growing and building the future we talk about.
+      </p>
+
+      <button class="btn" onclick="show('gallery')" style="margin-top:25px">
+        Keep going →
+      </button>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= GALLERY ================= -->
+
+<section id="gallery" class="screen">
+  <div class="wrap">
+
+    <div class="center">
+      <div class="eyebrow">little pieces of us</div>
+      <h2>A few memories.</h2>
+
+      <p style="max-width:650px;margin:20px auto">
+        Not every important moment was captured.
+        But these are some of the moments that did.
+      </p>
+    </div>
+
+    <div id="galleryGrid" class="gallery"></div>
+
+    <div class="center" style="margin-top:45px">
+      <button class="btn" onclick="show('shortletter')">
+        There's more I want to say ❤️
+      </button>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= SHORT LETTER ================= -->
+
+<section id="shortletter" class="screen">
+  <div class="wrap letter">
+
+    <div class="center">
+      <div class="eyebrow">the things I don't always say</div>
+      <h2>Things I don't say enough.</h2>
+    </div>
+
+    <div class="card">
+
+      <p>
+        I notice the little things you do.
+      </p>
+
+      <p>
+        I know we aren't perfect, and I know we've had our fights
+        and difficult days. But I also know how much the small efforts
+        and little adjustments mean to me.
+      </p>
+
+      <p>
+        You've become such an important part of my life, and even when
+        distance makes things harder, I still want to choose us.
+      </p>
+
+      <p>
+        I want to keep growing with you, understanding you, annoying you,
+        laughing with you and building a life together.
+      </p>
+
+      <p>
+        Thank you for being part of my life, Pucchkuu ❤️
+      </p>
+
+    </div>
+
+    <div class="center">
+      <button class="btn" onclick="show('bigletter')">
+        There's something bigger I want to say
+      </button>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= BIG PERSONAL LETTER ================= -->
+
+<section id="bigletter" class="screen">
+  <div class="wrap letter big-letter">
+
+    <div class="center">
+      <div class="eyebrow">a separate letter</div>
+      <h2>Our little story ❤️</h2>
+
+      <p style="max-width:700px;margin:20px auto">
+        This one is different.
+        This is the part I really wanted you to read.
+      </p>
+    </div>
+
+    <div class="card">
+
+      <p>
+        I don't really know when you became such an important part of my life.
+        Maybe it happened somewhere between all those coaching days, our random
+        conversations, the stupid things we used to laugh about, and all those
+        ordinary moments that somehow became some of my favourite memories.
+        I just know that somewhere along the way, you stopped being
+        <i>just someone I knew</i> and became someone who slowly became a part
+        of my everyday life, my comfort, my happiness, and my little world.
+      </p>
+
+      <p>
+        And then came <b>8 May 2024</b> — the day we became <i>us</i>. ❤️
+      </p>
+
+      <p>
+        Since then, we've collected so many little moments together.
+        The school days, the laughing, the stupid fights, the making up,
+        the promises, the understanding, the endless conversations,
+        and all those tiny moments that probably didn't look like much
+        to anyone else but meant everything to me.
+        Especially those little lunch-break moments when you'd come just
+        to see me for a few seconds. Maybe it was only a few seconds,
+        but somehow those few seconds were enough to make my entire day better.
+      </p>
+
+      <p>
+        When I think about us, I don't only remember the big moments.
+        I remember the tiny ones. The random updates. The silly conversations.
+        The way we could talk about absolutely nothing and still not want
+        the conversation to end. The comfort of knowing there was someone
+        I could tell things to. The feeling of having <i>my person</i>
+        somewhere in my day.
+      </p>
+
+      <p>
+        We've never been perfect, and I don't think I would want our story
+        to be perfect anyway.
+      </p>
+
+      <p>
+        We've fought. We've misunderstood each other. We've said things
+        we didn't mean properly. We've had days when we didn't know how
+        to understand what the other person was feeling. There have been
+        moments when things became difficult enough that we almost forgot
+        how much good existed between us.
+      </p>
+
+      <p>
+        But somewhere through all of that, there was always something
+        that brought us back to understanding each other.
+      </p>
+
+      <p>
+        Maybe that's what makes our story special to me.
+      </p>
+
+      <p>
+        We didn't just have the easy days.
+      </p>
+
+      <p>
+        We learned each other through the difficult ones too.
+      </p>
+
+      <p>
+        We learned that loving someone isn't only about saying the right
+        things when everything is perfect. Sometimes it's about being patient
+        when the other person is scared. Sometimes it's about listening
+        when you don't completely understand. Sometimes it's about giving
+        each other space without making that space feel like distance.
+        And sometimes it's simply about choosing to try again.
+      </p>
+
+      <p>
+        I think we've both changed along the way.
+      </p>
+
+      <p>
+        Not necessarily into the people we were before, but into people
+        who understand each other a little better now.
+      </p>
+
+      <p>
+        And maybe that's what this new chapter of us is about — not trying
+        to recreate everything exactly as it was, but building something
+        even more honest, comfortable and beautiful from everything we've learned.
+      </p>
+
+      <p>
+        Now we're long-distance, and honestly, I miss all those little things
+        more than I probably say. I miss having you close. I miss those random
+        moments when seeing you was just a normal part of my day. I miss the
+        little things that I never thought I'd have to miss.
+      </p>
+
+      <p>
+        But somehow, even with all this distance between us, you're still
+        such a big part of my everyday life.
+      </p>
+
+      <p>
+        And I don't know exactly what our future will look like.
+      </p>
+
+      <p>
+        I don't know what life will bring us, how much we'll change,
+        where we'll end up, or what our story will look like years from now.
+      </p>
+
+      <p>
+        But I know one thing.
+      </p>
+
+      <p>
+        I want to keep discovering it with you.
+      </p>
+
+      <p>
+        I want more random conversations, more stupid jokes, more memories,
+        more annoying each other, more laughing until we can't breathe,
+        more little moments that seem insignificant at the time but become
+        precious later.
+      </p>
+
+      <p>
+        I want to keep growing with you.
+      </p>
+
+      <p>
+        I want to understand you better, and I want you to understand me
+        better too. I want us to keep learning how to love each other in
+        the ways we actually need, rather than trying to be some perfect
+        version of a couple.
+      </p>
+
+      <p>
+        Because maybe that's what I love most about us.
+      </p>
+
+      <p>
+        We're not a perfect story.
+      </p>
+
+      <p>
+        We're just <b>us</b>.
+      </p>
+
+      <p>
+        A little messy. A little stupid. Sometimes complicated.
+        Sometimes ridiculously happy. Sometimes difficult.
+        But full of memories, comfort, effort, laughter, growth and so much love.
+      </p>
+
+      <p>
+        And if someone asked me what my favourite part of our story is,
+        I don't think I'd choose one particular day.
+      </p>
+
+      <p>
+        I'd choose the fact that somewhere between two ordinary people
+        simply talking, laughing and spending time together, we became
+        something that mattered this much.
+      </p>
+
+      <p>
+        And if I had to choose again, knowing everything we've been through,
+        knowing the easy days and the difficult ones, knowing how much we've
+        grown and how much we still have to learn...
+      </p>
+
+      <p>
+        <b>I'd still choose you.</b>
+      </p>
+
+      <p>
+        Not because our story has always been easy.
+      </p>
+
+      <p>
+        But because it's ours.
+      </p>
+
+      <p>
+        And because, somehow, through all the chapters, you're still the
+        person I look at and think,
+      </p>
+
+      <p style="text-align:center;font-size:23px;color:#efc0d5">
+        <i>"I'm really glad it was you."</i>
+      </p>
+
+      <p>
+        Happy birthday, Pucchu. ❤️
+      </p>
+
+      <p>
+        Here's to you, to everything you've become, to everything we've been,
+        and to all the little chapters we haven't written yet.
+      </p>
+
+      <p style="color:#efbdd4">
+        <b>
+          Always rooting for you. Always grateful that our paths crossed.
+          And always, a little bit, choosing you. ❤️
+        </b>
+      </p>
+
+    </div>
+
+    <div class="center">
+      <button class="btn" onclick="show('final')">
+        One last thing ❤️
+      </button>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= FINAL ================= -->
+
+<section id="final" class="screen">
+  <div class="stars"></div>
+  <div class="glow"></div>
+
+  <div class="hero">
+    <div class="wrap fade">
+
+      <div class="final-heart">♡</div>
+
+      <div class="eyebrow">for you</div>
+
+      <h1>Happy Birthday my love</h1>
+
+      <div class="final-lines">
+
+        <p>
+          Pucchkuu i love you and will love u always
+        </p>
+
+        <p>
+          you will always be my little baby 🥹
+        </p>
+
+        <p>
+          Here's to everything we've been, everything we are,
+          and everything we're still going to become.
+        </p>
+
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:clamp(28px,6vw,52px)">
+          Happy birthday my love kucchuu pucchuu sweetuuu ❤️
+        </h2>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+/* ================= BIRTHDAY ================= */
+
+const birthday = new Date("2026-10-09T00:00:00+05:30");
+
+
+/* ================= SECTIONS ================= */
+
+const sections = [
+  "lock",
+  "entry",
+  "intro",
+  "verify",
+  "level1",
+  "catch",
+  "game1",
+  "game2",
+  "story",
+  "gallery",
+  "shortletter",
+  "bigletter",
+  "final"
+];
+
+
+/* ================= MUSIC ================= */
+
+let audio = new Audio();
+let musicOn = false;
+let trackIndex = 0;
+
+const tracks = [
+  "song01.mp3",
+  "song02.mp3",
+  "song03.mp3",
+  "song04.mp3",
+  "song05.mp3",
+  "song06.mp3"
+];
+
+function musicStart(){
+
+  if(musicOn) return;
+
+  musicOn = true;
+
+  document.getElementById("musicBtn")
+    .classList.remove("hidden");
+
+  playTrack(0);
+}
+
+function playTrack(i){
+
+  trackIndex = i % tracks.length;
+
+  audio.src = "music/" + tracks[trackIndex];
+  audio.volume = .42;
+
+  audio.play().catch(()=>{});
+
+  audio.onended = function(){
+    playTrack(trackIndex + 1);
+  };
+}
+
+function toggleMusic(){
+
+  if(audio.paused){
+
+    audio.play().catch(()=>{});
+
+    document.getElementById("musicBtn").textContent = "♫ music";
+
+  }else{
+
+    audio.pause();
+
+    document.getElementById("musicBtn").textContent = "♫ muted";
+  }
+}
+
+
+/* ================= NAVIGATION ================= */
+
+function show(id){
+
+  sections.forEach(function(s){
+
+    const el = document.getElementById(s);
+
+    if(el) el.classList.remove("active");
+
+  });
+
+  const target = document.getElementById(id);
+
+  if(target) target.classList.add("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  if(id === "gallery"){
+    loadGallery();
+  }
+
+  if(id === "game1"){
+    renderG1();
+  }
+
+  if(id === "game2"){
+    renderG2();
+  }
+
+  if(id === "verify"){
+    renderVerify();
+  }
+}
+
+
+/* ================= BIRTHDAY LOCK ================= */
+
+function tick(){
+
+  const now = new Date();
+  const diff = birthday - now;
+
+  /*
+    IMPORTANT:
+    Once unlocked, only move from the lock screen to entry.
+    Do NOT force the user back to entry every second.
+  */
+
+  if(diff <= 0){
+
+    if(
+      document
+        .getElementById("lock")
+        .classList
+        .contains("active")
+    ){
+
+      show("entry");
+    }
+
+    return;
+  }
+
+  const d = Math.floor(diff / 86400000);
+
+  const h =
+    Math.floor(diff / 3600000) % 24;
+
+  const m =
+    Math.floor(diff / 60000) % 60;
+
+  const s =
+    Math.floor(diff / 1000) % 60;
+
+  document.getElementById("countdown").textContent =
+    String(d).padStart(2,"0") +
+    " : " +
+    String(h).padStart(2,"0") +
+    " : " +
+    String(m).padStart(2,"0") +
+    " : " +
+    String(s).padStart(2,"0");
+}
+
+tick();
+
+setInterval(tick,1000);
+
+
+/* ================= ENTRY ================= */
+
+function enterSite(){
+
+  musicStart();
+
+  show("intro");
+}
+
+
+/* ================= TOAST ================= */
+
+function toast(message){
+
+  const e = document.getElementById("toast");
+
+  e.textContent = message;
+
+  e.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer =
+    setTimeout(function(){
+      e.classList.remove("show");
+    },1600);
+}
+
+
+/* ================= VERIFICATION ================= */
+
+let vstep = 0;
+
+function renderVerify(){
+
+  const box =
+    document.getElementById("verifyBox");
+
+  if(vstep === 0){
+
+    box.innerHTML = `
+      <div class="count">01 / 02</div>
+
+      <h2 style="font-size:clamp(27px,5vw,43px)">
+        When is your girlfriend's birthday?
+      </h2>
+
+      <div class="choice-grid">
+
+        <button class="choice"
+          onclick="verifyAnswer(false)">
+          9 October
+        </button>
+
+        <button class="choice"
+          onclick="verifyAnswer(true)">
+          30 July ❤️
+        </button>
+
+        <button class="choice"
+          onclick="verifyAnswer(false)">
+          8 May
+        </button>
+
+        <button class="choice"
+          onclick="verifyAnswer(false)">
+          I refuse to answer 😭
+        </button>
+
+      </div>
+    `;
+
+  }else{
+
+    box.innerHTML = `
+      <div class="count">02 / 02</div>
+
+      <h2 style="font-size:clamp(27px,5vw,43px)">
+        When is our anniversary?
+      </h2>
+
+      <div class="choice-grid">
+
+        <button class="choice"
+          onclick="verifyAnswer(false)">
+          30 July 2024
+        </button>
+
+        <button class="choice"
+          onclick="verifyAnswer(true)">
+          8 May 2024 ❤️
+        </button>
+
+        <button class="choice"
+          onclick="verifyAnswer(false)">
+          9 October 2024
+        </button>
+
+        <button class="choice"
+          onclick="verifyAnswer(false)">
+          Classified information
+        </button>
+
+      </div>
+    `;
+  }
+}
+
+function verifyAnswer(ok){
+
+  if(!ok){
+
+    toast(
+      "Incorrect. Boyfriend status: questionable. 😭"
+    );
+
+    return;
+  }
+
+  if(vstep === 0){
+
+    vstep = 1;
+
+    renderVerify();
+
+    toast("Okay... one more.");
+  
+  }else{
+
+    toast(
+      "Verification complete. Unfortunately, you're stuck with her. ❤️"
+    );
+
+    setTimeout(function(){
+      show("level1");
+    },850);
+  }
+}
+
+
+/* ================= LEVEL 1 ================= */
+
+function level1(ok){
+
+  if(ok){
+
+    toast(
+      "Correct. I knew you'd remember. ❤️"
+    );
+
+    setTimeout(function(){
+      show("catch");
+    },700);
+
+  }else{
+
+    toast(
+      "Interesting answer. Very interesting. 😭"
+    );
+  }
+}
+
+
+/* ================= LEVEL 2 CATCH ================= */
+
+let catches = 0;
+
+const runner =
+  document.getElementById("runner");
+
+const area =
+  document.getElementById("catchArea");
+
+function moveRunner(){
+
+  const pad = 15;
+
+  const maxX =
+    Math.max(
+      0,
+      area.clientWidth -
+      runner.offsetWidth -
+      pad
+    );
+
+  const maxY =
+    Math.max(
+      0,
+      area.clientHeight -
+      runner.offsetHeight -
+      pad
+    );
+
+  runner.style.left =
+    (pad + Math.random() * maxX) + "px";
+
+  runner.style.top =
+    (pad + Math.random() * maxY) + "px";
+}
+
+runner.addEventListener("click",function(){
+
+  catches++;
+
+  if(catches >= 3){
+
+    document.getElementById("catchStatus")
+      .textContent =
+      "CAUGHT. ❤️ Took you long enough.";
+
+    runner.disabled = true;
+
+    runner.textContent = "CAUGHT ❤️";
+
+    setTimeout(function(){
+      show("game1");
+    },900);
+
+  }else{
+
+    document.getElementById("catchStatus")
+      .textContent =
+      "Caught " + catches + "/3 — she's running again.";
+
+    moveRunner();
+  }
+
+});
+
+
+/*
+  Easier movement:
+  It moves only every 2.2 seconds instead of
+  constantly jumping around.
+*/
+
+setInterval(function(){
+
+  if(
+    document
+      .getElementById("catch")
+      .classList
+      .contains("active") &&
+    !runner.disabled
+  ){
+
+    moveRunner();
+  }
+
+},2200);
+
+
+/* ================= GAME 1 ================= */
+
+const g1 = [
+
+"You both get locked in a room for 24 hours. Who annoys the other first?",
+
+"There is ONE last piece of your favourite food. Who gets it?",
+
+"You both have an argument and neither wants to text first. Who cracks first?",
+
+"You are both late. Who gets blamed?",
+
+"One phone has 1% battery and there’s one charger. Who gets the charger?",
+
+"If one of you says “I’m fine” while clearly NOT being fine, who said it?",
+
+"If you could hear only one person's thoughts for a whole day, whose brain are you entering?",
+
+"You both have to survive a whole day without annoying each other. Who ruins it first?",
+
+"Someone says, “Your partner is definitely wrong.” Who immediately starts defending themselves?",
+
+"You can delete ONE person's embarrassing memories forever. Whose memories are getting deleted?",
+
+"If both of you refuse to apologise, who eventually gives up and says “fine”?",
+
+"FINAL BOSS: You have to choose ONE person to annoy for the rest of your life. Who are you choosing?"
+
+];
+
+const reactions = [
+
+"COMMON SENSE: 0 🧠",
+
+"RLSHP POINTS: -69 💔",
+
+"BRO REALLY CHOSE THAT.",
+
+"That answer has been permanently recorded.",
+
+"Relationship committee notified 🚨",
+
+"You had ONE job 😭",
+
+"No changing your answer now. Suffer.",
+
+"Boyfriend status: questionable.",
+
+"Scientists are still trying to understand your decision."
+
+];
+
+let g1i = 0;
+
+let common = 0;
+
+let rel = -69;
+
+function renderG1(){
+
+  if(g1i >= g1.length){
+
+    setTimeout(function(){
+      show("game2");
+    },700);
+
+    return;
+  }
+
+  document.getElementById("g1q")
+    .textContent = g1[g1i];
+
+  document.getElementById("g1count")
+    .textContent =
+    String(g1i+1).padStart(2,"0") +
+    " / " +
+    g1.length;
+
+  document.getElementById("g1bar")
+    .style.width =
+    ((g1i) / g1.length * 100) + "%";
+
+  document.getElementById("common")
+    .textContent = common;
+
+  document.getElementById("rel")
+    .textContent = rel;
+}
+
+function answerG1(answer){
+
+  const buttons =
+    document.querySelectorAll(
+      "#game1 .choice"
+    );
+
+  buttons.forEach(function(b){
+    b.disabled = true;
+  });
+
+  /*
+    No answer is actually "wrong".
+    The point is the chaos.
+  */
+
+  if(answer === "PUCCHKUU"){
+
+    common += Math.floor(Math.random()*3);
+
+  }else{
+
+    rel -= Math.floor(Math.random()*8);
+  }
+
+  toast(
+    reactions[
+      Math.floor(
+        Math.random()*reactions.length
+      )
+    ]
+  );
+
+  g1i++;
+
+  setTimeout(function(){
+
+    buttons.forEach(function(b){
+      b.disabled = false;
+    });
+
+    renderG1();
+
+  },900);
+}
+
+
+/* ================= GAME 2 ================= */
+
+const g2 = [
+
+[
+"Fight a chicken every time Ishika says “hmm”",
+"Fight Ishika every time the chicken says “hmm”"
+],
+
+[
+"Have Ishika randomly teleport into your room once a day",
+"Have your own voice randomly say “Ishika is right” every 10 minutes"
+],
+
+[
+"Every time you lie, a pigeon appears",
+"Every time Ishika lies, YOU turn into the pigeon 🐦"
+],
+
+[
+"Give Ishika your phone but your phone screams whenever she opens it",
+"Keep your phone but Ishika gets a notification every time you unlock it"
+],
+
+[
+"Explain every argument to a confused 5-year-old",
+"Explain it to your future self who already knows you're wrong"
+],
+
+[
+"Ishika can pause you whenever you're talking",
+"Ishika can rewind your last 30 seconds whenever she wants"
+],
+
+[
+"Every “okay” gives Ishika one free argument point",
+"Every “fine” from Ishika makes you lose three points"
+],
+
+[
+"Wake up with Ishika's playlist permanently playing in your head",
+"Hear your worst decisions narrated by Ishika all day"
+],
+
+[
+"Ishika names every contact in your phone",
+"Ishika gets to rename YOU in everyone's phone"
+],
+
+[
+"Whenever you miss Ishika, an alarm screams “TEXT HER!”",
+"Whenever Ishika misses you, your phone automatically sends “I miss you too”"
+],
+
+[
+"Say “yes ma'am” every time Ishika asks something",
+"A dramatic courtroom sound plays every time you disagree"
+],
+
+[
+"Ishika gets one button saying “Pucchu, explain yourself.”",
+"Ishika gets one button saying “Interesting…” and you never find out what it means"
+]
+
+];
+
+const g2reactions = [
+
+"WHY WERE THESE BOTH OPTIONS???",
+
+"Common sense has officially resigned.",
+
+"Congratulations. You chose the worse option.",
+
+"This question had no purpose. Neither did your answer.",
+
+"Bro is taking nonsense VERY seriously.",
+
+"Ishika has received your answer. Good luck."
+
+];
+
+let g2i = 0;
+
+function renderG2(){
+
+  if(g2i >= g2.length){
+
+    setTimeout(function(){
+      show("story");
+    },800);
+
+    return;
+  }
+
+  document.getElementById("g2q")
+    .textContent =
+    "Choose your fate.";
+
+  document.getElementById("g2a")
+    .textContent =
+    g2[g2i][0];
+
+  document.getElementById("g2b")
+    .textContent =
+    g2[g2i][1];
+
+  document.getElementById("g2count")
+    .textContent =
+    String(g2i+1).padStart(2,"0") +
+    " / " +
+    g2.length;
+
+  document.getElementById("g2bar")
+    .style.width =
+    ((g2i) / g2.length * 100) + "%";
+}
+
+function answerG2(which){
+
+  const buttons =
+    document.querySelectorAll(
+      "#game2 .choice"
+    );
+
+  buttons.forEach(function(b){
+    b.disabled = true;
+  });
+
+  toast(
+    g2reactions[
+      Math.floor(
+        Math.random()*g2reactions.length
+      )
+    ]
+  );
+
+  g2i++;
+
+  setTimeout(function(){
+
+    buttons.forEach(function(b){
+      b.disabled = false;
+    });
+
+    renderG2();
+
+  },950);
+}
+
+
+/* ================= GALLERY ================= */
+
+function loadGallery(){
+
+  const grid =
+    document.getElementById("galleryGrid");
+
+  if(grid.dataset.loaded === "yes")
+    return;
+
+  grid.dataset.loaded = "yes";
+
+  for(let i=1;i<=24;i++){
+
+    const num =
+      String(i).padStart(2,"0");
+
+    const card =
+      document.createElement("div");
+
+    card.className = "photo-card";
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      "photos/photo" + num + ".jpg";
+
+    img.alt =
+      "Memory " + i;
+
+    /*
+      Missing photos disappear instead of
+      showing broken-image icons.
+    */
+
+    img.onerror = function(){
+
+      card.remove();
+    };
+
+    card.appendChild(img);
+
+    grid.appendChild(card);
+  }
+}
+
+
+/* ================= INITIALISE ================= */
+
+show("lock");
+
+</script>
+
+</body>
+</html>
